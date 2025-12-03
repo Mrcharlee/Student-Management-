@@ -1,0 +1,120 @@
+﻿@model Student
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Student</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .display-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+            input[type="submit"]:hover {
+                background-color: #45a049;
+            }
+
+        .home-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+            .home-link:hover {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Add New Student</h2>
+
+       
+        <div class="form-section">
+            <form action="/Student/AddUI" method="post">
+                <div class="form-group">
+                    <label for="Name">Student Name:</label>
+                    <input type="text" id="Name" name="Name" placeholder="Enter student name" />
+                </div>
+
+                <div class="form-group">
+                    <label for="Code">Student Code:</label>
+                    <input type="text" id="Code" name="Code" placeholder="Enter student code" />
+                </div>
+
+                <input type="submit" value="Submit Student" />
+            </form>
+        </div>
+
+    
+        @if (Model != null && !string.IsNullOrEmpty(Model.Name))
+        {
+            <div class="display-section">
+                <h3>✅ Student Successfully Added!</h3>
+                <p><strong>Student Name:</strong> @Model.Name</p>
+                <p><strong>Student Code:</strong> @Model.Code</p>
+                <p><em>Student record has been saved successfully.</em></p>
+            </div>
+        }
+
+       
+        <a href="/Home/Index" class="home-link">← Back to Home</a>
+    </div>
+</body>
+</html>
