@@ -1,0 +1,200 @@
+<div class="container">
+  <h2>Student Management</h2>
+  
+  <!-- Student Form -->
+  <div class="form-section">
+    <h3>{{ isEditMode ? 'Edit Student' : 'Add New Student' }}</h3>
+    <form (ngSubmit)="submitForm()" #studentForm="ngForm">
+      <table class="form-table">
+        <tr>
+          <td><label>Name:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="studentObj.name" name="name" required 
+                   class="form-control" placeholder="Enter student name"
+                   pattern="[A-Za-z\s]+" minlength="2" #name="ngModel">
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="error-message">
+              <div *ngIf="name.errors?.['required']">Name is required</div>
+              <div *ngIf="name.errors?.['minlength']">Name must be at least 2 characters</div>
+              <div *ngIf="name.errors?.['pattern']">Name can only contain letters and spaces</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Student Code:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="studentObj.code" name="code" required 
+                   class="form-control" placeholder="Enter student code"
+                   pattern="[0-9]+" minlength="1" #code="ngModel">
+            <div *ngIf="code.invalid && (code.dirty || code.touched)" class="error-message">
+              <div *ngIf="code.errors?.['required']">Student code is required</div>
+              <div *ngIf="code.errors?.['pattern']">Code must contain only numbers</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Email:</label></td>
+          <td>
+            <input type="email" [(ngModel)]="studentObj.email" name="email" 
+                   class="form-control" placeholder="Enter email" #emailField="ngModel">
+            <div *ngIf="emailField.invalid && emailField.touched" class="error-message">
+              <div *ngIf="emailField.errors?.['email']">Please enter a valid email address</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Phone:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="studentObj.phone" name="phone" 
+                   class="form-control" placeholder="Enter phone number"
+                   pattern="[0-9+\-\s]+" #phoneField="ngModel">
+            <div *ngIf="phoneField.invalid && phoneField.touched" class="error-message">
+              <div *ngIf="phoneField.errors?.['pattern']">Please enter a valid phone number</div>
+            </div>
+          </td>
+        </tr>
+        
+        <!-- Permanent Address -->
+        <tr>
+          <td colspan="2" class="address-header">
+            <h4>Permanent Address</h4>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Street:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="studentObj.addresses[0].street" name="permanentStreet" 
+                   class="form-control" placeholder="Enter street address">
+          </td>
+        </tr>
+        <tr>
+          <td><label>City:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="studentObj.addresses[0].city" name="permanentCity" 
+                   class="form-control" placeholder="Enter city">
+          </td>
+        </tr>
+        <tr>
+          <td><label>State:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="studentObj.addresses[0].state" name="permanentState" 
+                   class="form-control" placeholder="Enter state">
+          </td>
+        </tr>
+        <tr>
+          <td><label>Zip Code:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="studentObj.addresses[0].zipCode" name="permanentZipCode" 
+                   class="form-control" placeholder="Enter zip code">
+          </td>
+        </tr>
+        
+        <!-- Temporary Address -->
+        <tr>
+          <td colspan="2" class="address-header">
+            <h4>Temporary Address</h4>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Street:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="studentObj.addresses[1].street" name="temporaryStreet" 
+                   class="form-control" placeholder="Enter street address">
+          </td>
+        </tr>
+        <tr>
+          <td><label>City:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="studentObj.addresses[1].city" name="temporaryCity" 
+                   class="form-control" placeholder="Enter city">
+          </td>
+        </tr>
+        <tr>
+          <td><label>State:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="studentObj.addresses[1].state" name="temporaryState" 
+                   class="form-control" placeholder="Enter state">
+          </td>
+        </tr>
+        <tr>
+          <td><label>Zip Code:</label></td>
+          <td>
+            <input type="text" [(ngModel)]="studentObj.addresses[1].zipCode" name="temporaryZipCode" 
+                   class="form-control" placeholder="Enter zip code">
+          </td>
+        </tr>
+        
+        <!-- Submit Buttons -->
+        <tr>
+          <td colspan="2">
+            <div class="button-group">
+              <button type="submit" class="btn-primary" [disabled]="!studentForm.form.valid">
+                {{ isEditMode ? 'Update Student' : 'Add Student' }}
+              </button>
+              
+              <button *ngIf="isEditMode" type="button" class="btn-secondary" (click)="cancelEdit()">
+                Cancel Edit
+              </button>
+
+              <button type="button" class="btn-clear" (click)="clearForm()">
+                Clear Form
+              </button>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+
+  <!-- Students List -->
+  <div class="list-section">
+    <h3>Students List ({{ getValidStudents().length }})</h3>
+    
+    <table class="student-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Code</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Permanent Address</th>
+          <th>Temporary Address</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of getValidStudents()">
+          <td>{{ student.id }}</td>
+          <td>{{ student.name || 'N/A' }}</td>
+          <td>{{ student.code || 'N/A' }}</td>
+          <td>{{ student.email || 'N/A' }}</td>
+          <td>{{ student.phone || 'N/A' }}</td>
+          
+          <!-- Permanent Address Column -->
+          <td>
+            <span *ngIf="getAddress(student.addresses, 0)">
+              {{getAddress(student.addresses, 0)}}
+            </span>
+            <span *ngIf="!getAddress(student.addresses, 0)">N/A</span>
+          </td>
+          
+          <!-- Temporary Address Column -->
+          <td>
+            <span *ngIf="getAddress(student.addresses, 1)">
+              {{getAddress(student.addresses, 1)}}
+            </span>
+            <span *ngIf="!getAddress(student.addresses, 1)">N/A</span>
+          </td>
+          
+          <td class="actions">
+            <button class="btn-edit" (click)="editStudent(student)">Edit</button>
+            <button class="btn-delete" (click)="deleteStudent(student)">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="getValidStudents().length === 0">
+          <td colspan="8" class="no-data">No students found. Add your first student above!</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
