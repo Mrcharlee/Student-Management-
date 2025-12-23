@@ -41,7 +41,7 @@ It allows users to manage student records and addresses with a clean separation 
 ## Tech Stack
 
 * **Backend:** .NET 6 / ASP.NET Core, C#
-* **Frontend:** Angular 15+, TypeScript, HTML/CSS
+* **Frontend:** Angular 21, TypeScript, HTML/CSS
 * **Database:** SQL Server
 * **ORM:** Entity Framework Core
 * **Version Control:** Git + GitHub
